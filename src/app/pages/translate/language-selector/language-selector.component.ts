@@ -85,6 +85,14 @@ export class LanguageSelectorComponent extends BaseComponent implements OnInit, 
   }
 
   langName(lang: string): string {
+    // If this is a signed language selector, use the abbreviation if available
+    if (this.translationKey === 'signedLanguagesShort') {
+      const match = IANASignedLanguages.find(l => l.signed === lang);
+      if (match && match.abbreviation) {
+        return match.abbreviation;
+      }
+    }
+
     if (this.displayNames && lang.length === 2) {
       const result = this.displayNames.of(lang.toUpperCase());
       if (result && result !== lang) {

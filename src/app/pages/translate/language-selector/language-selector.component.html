@@ -17,7 +17,7 @@
     @for (lang of topLanguages; track lang) {
       <mat-tab (select)="selectLanguage(lang)">
         <ng-template mat-tab-label>
-          @if (flags) {
+          @if (flags && translationKey !== 'signedLanguagesShort') {
             <app-flag-icon [country]="langCountries[lang]" [squared]="true" />
           }
           {{ langNames[lang] }}
@@ -47,7 +47,7 @@
       expand="full"
       fill="clear">
       @if (language) {
-        @if (flags) {
+        @if (flags && translationKey !== 'signedLanguagesShort') {
           <app-flag-icon [country]="langCountries[language]" [squared]="true"></app-flag-icon>
         }
         <span class="wrap-text">{{ langNames[language] }}</span>
@@ -75,7 +75,7 @@
       }
       @for (language of languages; track language) {
         <button (click)="selectLanguage(language)" mat-menu-item>
-          @if (flags) {
+          @if (flags && translationKey !== 'signedLanguagesShort') {
             <app-flag-icon [country]="langCountries[language]" [squared]="true"></app-flag-icon>
           }
           {{ langNames[language] }}
