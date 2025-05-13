@@ -1,0 +1,78 @@
+<div class="upload-container">
+  <h2>Upload Content for Sign Language Generation</h2>
+
+  <form [formGroup]="uploadForm" (ngSubmit)="processFile()" class="upload-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Select Input Type</mat-label>
+      <mat-select formControlName="fileType">
+        <mat-option value="pdf">PDF File</mat-option>
+        <mat-option value="youtube">YouTube Video</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="uploadForm.get('fileType')?.value === 'pdf'" class="file-upload-section">
+      <input
+        type="file"
+        accept=".pdf"
+        (change)="onFileSelected($event)"
+        #fileInput
+        style="display: none"
+      />
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="fileInput.click()"
+      >
+        Select PDF File
+      </button>
+      <span *ngIf="selectedFile" class="file-name">
+        Selected file: {{ selectedFile.name }}
+      </span>
+    </div>
+
+    <div *ngIf="uploadForm.get('fileType')?.value === 'youtube'" class="youtube-section">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>YouTube Video URL</mat-label>
+        <input
+          matInput
+          formControlName="youtubeUrl"
+          placeholder="https://www.youtube.com/watch?v=..."
+        />
+        <mat-error *ngIf="uploadForm.get('youtubeUrl')?.hasError('pattern')">
+          Please enter a valid YouTube URL
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="action-buttons">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="isProcessing || !uploadForm.valid"
+      >
+        {{ isProcessing ? 'Processing...' : 'Process Content' }}
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="extractedText" class="extracted-text-section">
+    <h3>Extracted Text</h3>
+    <div class="text-content">
+      {{ extractedText }}
+    </div>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="generateSignLanguage()"
+      [disabled]="!extractedText"
+    >
+      Generate Sign Language
+    </button>
+  </div>
+</div> 
